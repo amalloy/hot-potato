@@ -50,7 +50,13 @@ the base function, args are permuted as defined by the 'how'
 argument (see the permute function in this namespace for details on
 how permutations can be specified).
 
-For convenience, if no permutation is defined then reorder assumes a
-two-argument function and simply swaps the arguments."
-  ([f] (fn [a b] (f b a)))
+For convenience, if no permutation is specified then reorder simply
+reverses the order of the arguments."
+  ([f]
+     (fn
+       ([] (f))
+       ([a] (f a))
+       ([a b] (f b a))
+       ([a b c] (f c b a))
+       ([a b c & more] (apply f (conj (vec (reverse more)) c b a)))))
   ([how f] (fn [& args] (apply f (permute how (vec args))))))
