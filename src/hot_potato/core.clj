@@ -28,7 +28,7 @@
 
 ;; Vectors are like maps, but one-way instead of two-way: [[0 2] [2
 ;; 0]] is the same as {0 2} for maps, but [[0 2]] copies the 0th
-;; parameter into the 2nd slot AND ALSO passes it in the first
+;; parameter into the 2nd slot AND ALSO passes it in the 0th
 ;; slot. This allows more flexible reordering if the swap methodology
 ;; is insufficient
 (pair-permuter
