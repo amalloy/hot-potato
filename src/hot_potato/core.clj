@@ -9,9 +9,28 @@
   (fn [how v]
     (type how)))
 
+;; warning warning unhygenic macro. exposes the following symbols to
+;; the expansion context: orig (original vector), acc (result
+;; accumulator), a/b (swap indexes)
+(defmacro pair-permuter [class how]
+  `(defmethod permute ~class [swaps# ~'orig]
+     (reduce (fn ~'[acc [a b]]
+               ~how)
+             ~'orig swaps#)))
+
+(pair-permuter
+ clojure.lang.IPersistentMap
+ (assoc acc
+   a (orig b)
+   b (orig a)))
+
+(pair-permuter
+ clojure.lang.IPersistentVector
+ (assoc acc a (orig b)))
+
 ;; Interpret maps as a set of swaps to make: {0 2} and {2 0} both mean
 ;; to swap positions 0 and 2
-(defmethod permute clojure.lang.IPersistentMap
+#_(defmethod permute clojure.lang.IPersistentMap
   [swaps v]
   (reduce (fn [ret [a b]]
             (assoc ret a (v b) b (v a)))
