@@ -18,23 +18,22 @@
                ~how)
              ~'orig swaps#)))
 
+;; Interpret maps as a set of swaps to make: {0 2} and {2 0} both mean
+;; to swap positions 0 and 2
 (pair-permuter
  clojure.lang.IPersistentMap
  (assoc acc
    a (orig b)
    b (orig a)))
 
+;; Vectors are like maps, but one-way instead of two-way: [[0 2] [2
+;; 0]] is the same as {0 2} for maps, but [[0 2]] copies the 0th
+;; parameter into the 2nd slot AND ALSO passes it in the first
+;; slot. This allows more flexible reordering if the swap methodology
+;; is insufficient
 (pair-permuter
  clojure.lang.IPersistentVector
  (assoc acc a (orig b)))
-
-;; Interpret maps as a set of swaps to make: {0 2} and {2 0} both mean
-;; to swap positions 0 and 2
-#_(defmethod permute clojure.lang.IPersistentMap
-  [swaps v]
-  (reduce (fn [ret [a b]]
-            (assoc ret a (v b) b (v a)))
-          v swaps))
 
 ;; permute +1 turns (rotated 1 2 3) into (original 3 1 2)
 ;; permute -1 turns (rotated 1 2 3) into (original 2 3 1)
