@@ -33,7 +33,7 @@
 ;; is insufficient
 (pair-permuter
  clojure.lang.IPersistentVector
- (assoc acc a (orig b)))
+ (assoc acc b (orig a)))
 
 ;; permute +1 turns (rotated 1 2 3) into (original 3 1 2)
 ;; permute -1 turns (rotated 1 2 3) into (original 2 3 1)
