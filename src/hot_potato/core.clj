@@ -28,12 +28,12 @@
 
 ;; Vectors are like maps, but one-way instead of two-way: [[0 2] [2
 ;; 0]] is the same as {0 2} for maps, but [[0 2]] copies the 0th
-;; parameter into the 2nd slot AND ALSO passes it in the 0th
-;; slot. This allows more flexible reordering if the swap methodology
-;; is insufficient
+;; parameter into the 2nd slot WITHOUT CHANGING the 0th slot. This
+;; allows more flexible reordering if the map/swap methodology is too
+;; rigid
 (pair-permuter
  clojure.lang.IPersistentVector
- (assoc acc a (orig b)))
+ (assoc acc b (orig a)))
 
 ;; permute +1 turns (rotated 1 2 3) into (original 3 1 2)
 ;; permute -1 turns (rotated 1 2 3) into (original 2 3 1)
@@ -50,7 +50,13 @@ the base function, args are permuted as defined by the 'how'
 argument (see the permute function in this namespace for details on
 how permutations can be specified).
 
-For convenience, if no permutation is defined then reorder assumes a
-two-argument function and simply swaps the arguments."
-  ([f] (fn [a b] (f b a)))
+For convenience, if no permutation is specified then reorder simply
+reverses the order of the arguments."
+  ([f]
+     (fn
+       ([] (f))
+       ([a] (f a))
+       ([a b] (f b a))
+       ([a b c] (f c b a))
+       ([a b c & more] (apply f (conj (vec (reverse more)) c b a)))))
   ([how f] (fn [& args] (apply f (permute how (vec args))))))
