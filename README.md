@@ -19,7 +19,7 @@ more specialized behavior, you can supply an additional argument to
 arguments to be rotated/cycled: to the right for positive integers and
 to the left for negative. Maps swap arguments, so eg `((reorder {0 2}
 -) 1 4 6)` invokes `(- 6 4 1)`. For more fine-tuned swap-like
-behavior, you can use vectors: `((reorder [[0 1] [0 2]] +) 1 2 3))`
+behavior, you can use vectors: `((reorder [[0 1] [0 2]] +) 1 2 3)`
 copies the 0th argument into slots 1 and 2, *discarding* the displaced
 arguments, so it will invoke `(+ 1 1 1)`.
 
